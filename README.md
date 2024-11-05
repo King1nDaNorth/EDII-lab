@@ -5,4 +5,4 @@ Repository for lab activity related to data science
 
 ## Rodrigo Lucas Rosales - 10365071
 ## Rafael
-## Victor
+## Victor Hugo Fiuza Garcia - 10331903
