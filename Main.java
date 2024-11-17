@@ -4,25 +4,29 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    // Método para ler valores de um arquivo CSV
     public static int[] lerValoresDoCSV(String caminhoArquivo) {
-        String linha = "";
-        String separador = ",";
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
-            if ((linha = br.readLine()) != null) {
-                String[] valores = linha.split(separador);
-                int[] numeros = new int[valores.length];
-                for (int i = 0; i < valores.length; i++) {
-                    numeros[i] = Integer.parseInt(valores[i].trim());
-                }
-                return numeros;
-            }
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
+
+                String estacao = dados[0];
+                int ano = Integer.parseInt(dados[1]);
+                int[] dadosMensais = Arrays.stream(Arrays.copyOfRange(dados, 2, 14))
+                                           .mapToInt(Integer::parseInt)
+                                           .toArray();
+                // Modificar para situacoes de multiplas linhas. Talvez fazer array tambem?
+                int linhaArvore = Integer.parseInt(dados[14]);
+
+                DadosEstacao dadosEstacao = new DadosEstacao(estacao, ano, dadosMensais, linhaArvore);
+
+                avlTree.insert(dadosEstacao)
         } catch (IOException e) {
             System.out.println("Erro ao ler o arquivo: " + e.getMessage());
         } catch (NumberFormatException e) {
             System.out.println("Erro na formatação dos números: " + e.getMessage());
         }
-        return new int[0];  // Retorna um array vazio em caso de erro
+        return new int[0];
     }
 
     public static void main(String[] args) {
@@ -36,7 +40,7 @@ public class Main {
         System.out.println("4. Carregar dados de um arquivo CSV para AVL");
         System.out.print("Digite a opção desejada: ");
         int choice = scanner.nextInt();
-        scanner.nextLine();  // Consumir a quebra de linha
+        scanner.nextLine();
 
         switch (choice) {
             case 1:
@@ -47,7 +51,7 @@ public class Main {
                 break;
             case 3:
             case 4:
-                String caminhoCSV = "src/main/java/dados.csv"; // Caminho fixo para o arquivo CSV
+                String caminhoCSV = "src/main/java/dados.csv";
                 int[] valores = lerValoresDoCSV(caminhoCSV);
                 if (valores.length == 0) {
                     System.out.println("Nenhum valor foi carregado. Saindo...");
@@ -83,7 +87,7 @@ public class Main {
             System.out.print("Escolha uma opção: ");
             if (!scanner.hasNextInt()) {
                 System.out.println("Entrada inválida. Por favor, insira um número.");
-                scanner.next();  // Descarta a entrada inválida
+                scanner.next();
                 continue;
             }
             int option = scanner.nextInt();
@@ -97,7 +101,7 @@ public class Main {
                         System.out.println("Valor inserido.");
                     } else {
                         System.out.println("Entrada inválida. Por favor, insira um número.");
-                        scanner.next();  // Descarta a entrada inválida
+                        scanner.next();
                     }
                     break;
                 case 2:
@@ -108,7 +112,7 @@ public class Main {
                         System.out.println("Encontrado: " + encontrado);
                     } else {
                         System.out.println("Entrada inválida. Por favor, insira um número.");
-                        scanner.next();  // Descarta a entrada inválida
+                        scanner.next();
                     }
                     break;
                 case 3:
@@ -119,7 +123,7 @@ public class Main {
                         System.out.println("Valor deletado (se existia).");
                     } else {
                         System.out.println("Entrada inválida. Por favor, insira um número.");
-                        scanner.next();  // Descarta a entrada inválida
+                        scanner.next();
                     }
                     break;
                 case 4:
