@@ -1,3 +1,7 @@
+// Precisa modificar para refletir mudancas nos Nodes, que agora incluem os objetos da estacao
+// Principalmente na parte de comparacao, como na linha 18. talvez precise comparar
+// "estacao" (nome) + "ano", para nao dar erro, porque teremos 4 de cada estacao
+
 public class BinarySearchTree {
     protected Node root;
 
@@ -5,57 +9,57 @@ public class BinarySearchTree {
         root = null;
     }
 
-    public void insert(int value) {
-        root = insertRecursive(root, value);
+    public void insert(DadosEstacao dados) {
+        root = insertRecursive(root, dados);
     }
 
-    protected Node insertRecursive(Node node, int value) {
+    protected Node insertRecursive(Node node, DadosEstacao dados) {
         if (node == null) {
-            return new Node(value);
+            return new Node(dados);
         }
-        if (value < node.value) {
-            node.left = insertRecursive(node.left, value);
-        } else if (value > node.value) {
-            node.right = insertRecursive(node.right, value);
+        if (dados < node.dados) {
+            node.left = insertRecursive(node.left, dados);
+        } else if (dados > node.dados) {
+            node.right = insertRecursive(node.right, dados);
         }
         return node;
     }
 
-    public boolean search(int value) {
-        return searchRecursive(root, value);
+    public boolean search(DadosEstacao dados) {
+        return searchRecursive(root, dados);
     }
 
-    private boolean searchRecursive(Node node, int value) {
+    private boolean searchRecursive(Node node, DadosEstacao dados) {
         if (node == null) {
             return false;
         }
-        if (value == node.value) {
+        if (dados == node.dados) {
             return true;
         }
-        return value < node.value
-            ? searchRecursive(node.left, value)
-            : searchRecursive(node.right, value);
+        return dados < node.dados
+            ? searchRecursive(node.left, dados)
+            : searchRecursive(node.right, dados);
     }
 
-    public void delete(int value) {
-        root = deleteRecursive(root, value);
+    public void delete(DadosEstacao dados) {
+        root = deleteRecursive(root, dados);
     }
 
-    protected Node deleteRecursive(Node node, int value) {
+    protected Node deleteRecursive(Node node, DadosEstacao dados) {
         if (node == null) {
             return null;
         }
 
-        if (value < node.value) {
-            node.left = deleteRecursive(node.left, value);
-        } else if (value > node.value) {
-            node.right = deleteRecursive(node.right, value);
+        if (dados < node.dados) {
+            node.left = deleteRecursive(node.left, dados);
+        } else if (dados > node.dados) {
+            node.right = deleteRecursive(node.right, dados);
         } else {
             if (node.left == null) return node.right;
             if (node.right == null) return node.left;
 
-            node.value = findMinValue(node.right);
-            node.right = deleteRecursive(node.right, node.value);
+            node.dados = findMinValue(node.right);
+            node.right = deleteRecursive(node.right, node.dados);
         }
         return node;
     }
@@ -64,7 +68,7 @@ public class BinarySearchTree {
         while (node.left != null) {
             node = node.left;
         }
-        return node.value;
+        return node.dados;
     }
 
     public void inOrderTraversal() {
@@ -74,7 +78,7 @@ public class BinarySearchTree {
     private void inOrderTraversalRecursive(Node node) {
         if (node != null) {
             inOrderTraversalRecursive(node.left);
-            System.out.print(node.value + " ");
+            System.out.print(node.dados + " ");
             inOrderTraversalRecursive(node.right);
         }
     }
@@ -88,7 +92,7 @@ public class BinarySearchTree {
         if (node == null) {
             return;
         }
-        System.out.print(node.value + " ");
+        System.out.print(node.dados + " ");
         preOrderTraversal(node.left);
         preOrderTraversal(node.right);
     }
@@ -98,7 +102,7 @@ public class BinarySearchTree {
             return;
         }
         inOrderTraversal(node.left);
-        System.out.print(node.value + " ");
+        System.out.print(node.dados + " ");
         inOrderTraversal(node.right);
     }
 
@@ -113,6 +117,6 @@ public class BinarySearchTree {
         }
         postOrderTraversal(node.left);
         postOrderTraversal(node.right);
-        System.out.print(node.value + " ");
+        System.out.print(node.dados + " ");
     }
 }
