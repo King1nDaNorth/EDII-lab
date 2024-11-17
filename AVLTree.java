@@ -1,20 +1,25 @@
+// Precisa modificar para refletir mudancas nos Nodes, que agora incluem os objetos da estacao
+// Principalmente na parte de comparacao, como na linha 18. talvez precise comparar
+// "estacao" (nome) + "ano", para nao dar erro, porque teremos 4 de cada estacao 
+
+
 public class AVLTree extends BinarySearchTree {
 
     @Override
-    public void insert(int value) {
-        root = insertRecursive(root, value);
+    public void insert(DadosEstacao dados) {
+        root = insertRecursive(root, dados);
     }
 
     @Override
-    protected Node insertRecursive(Node node, int value) {
+    protected Node insertRecursive(Node node, DadosEstacao dados) {
         if (node == null) {
-            return new Node(value);
+            return new Node(dados);
         }
 
-        if (value < node.value) {
-            node.left = insertRecursive(node.left, value);
-        } else if (value > node.value) {
-            node.right = insertRecursive(node.right, value);
+        if (dados < node.dados) {
+            node.left = insertRecursive(node.left, dados);
+        } else if (dados > node.dados) {
+            node.right = insertRecursive(node.right, dados);
         } else {
             return node; // Duplicados não são permitidos
         }
@@ -24,25 +29,25 @@ public class AVLTree extends BinarySearchTree {
     }
 
     @Override
-    public void delete(int value) {
-        root = deleteRecursive(root, value);
+    public void delete(DadosEstacao dados) {
+        root = deleteRecursive(root, dados);
     }
 
     @Override
-    protected Node deleteRecursive(Node node, int value) {
+    protected Node deleteRecursive(Node node, DadosEstacao dados) {
         if (node == null)
             return null;
 
-        if (value < node.value) {
-            node.left = deleteRecursive(node.left, value);
-        } else if (value > node.value) {
-            node.right = deleteRecursive(node.right, value);
+        if (dados < node.dados) {
+            node.left = deleteRecursive(node.left, dados);
+        } else if (dados > node.dados) {
+            node.right = deleteRecursive(node.right, dados);
         } else {
             if (node.left == null || node.right == null) {
                 node = (node.left != null) ? node.left : node.right;
             } else {
-                node.value = findMinValue(node.right);
-                node.right = deleteRecursive(node.right, node.value);
+                node.dados = findMinValue(node.right);
+                node.right = deleteRecursive(node.right, node.dados);
             }
         }
 
@@ -116,7 +121,7 @@ public class AVLTree extends BinarySearchTree {
         if (node == null) {
             return;
         }
-        System.out.print(node.value + " ");
+        System.out.print(node.dados + " ");
         preOrderTraversal(node.left);
         preOrderTraversal(node.right);
     }
@@ -131,7 +136,7 @@ public class AVLTree extends BinarySearchTree {
             return;
         }
         inOrderTraversal(node.left);
-        System.out.print(node.value + " ");
+        System.out.print(node.dados + " ");
         inOrderTraversal(node.right);
     }
 
@@ -146,6 +151,6 @@ public class AVLTree extends BinarySearchTree {
         }
         postOrderTraversal(node.left);
         postOrderTraversal(node.right);
-        System.out.print(node.value + " ");
+        System.out.print(node.dados + " ");
     }
 }
