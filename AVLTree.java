@@ -1,8 +1,3 @@
-// Precisa modificar para refletir mudancas nos Nodes, que agora incluem os objetos da estacao
-// Principalmente na parte de comparacao, como na linha 18. talvez precise comparar
-// "estacao" (nome) + "ano", para nao dar erro, porque teremos 4 de cada estacao 
-
-
 public class AVLTree extends BinarySearchTree {
 
     @Override
@@ -15,13 +10,13 @@ public class AVLTree extends BinarySearchTree {
         if (node == null) {
             return new Node(dados);
         }
+        String newKey = dados.getEstacao() + Integer.toString(dados.getAno());
+        String currentKey = node.dados.getEstacao() + Integer.toString(node.dados.getAno());
 
-        if (dados < node.dados) {
+        if (newKey.compareTo(currentKey) < 0) {
             node.left = insertRecursive(node.left, dados);
-        } else if (dados > node.dados) {
+        } else if (newKey.compareTo(currentKey) > 0) {
             node.right = insertRecursive(node.right, dados);
-        } else {
-            return node; // Duplicados não são permitidos
         }
 
         node.height = 1 + Math.max(height(node.left), height(node.right));
@@ -38,9 +33,13 @@ public class AVLTree extends BinarySearchTree {
         if (node == null)
             return null;
 
-        if (dados < node.dados) {
+        String deleteKey = dados.getEstacao() + Integer.toString(dados.getAno());
+        String currentKey = node.dados.getEstacao() + Integer.toString(node.dados.getAno());
+
+
+        if (deleteKey.compareTo(currentKey) < 0) {
             node.left = deleteRecursive(node.left, dados);
-        } else if (dados > node.dados) {
+        } else if (deleteKey.compareTo(currentKey) > 0) {
             node.right = deleteRecursive(node.right, dados);
         } else {
             if (node.left == null || node.right == null) {
@@ -157,21 +156,21 @@ public class AVLTree extends BinarySearchTree {
     }
 
     // Metodos de analise dos dados
-    
+
     public void totais() {
         System.out.println("Totais por estacao e por ano:");
         totais(root, null, new int[1]);
     }
 
-    private void totais(AVLNode node, String estacaoAtual, int[] totalGeral) {
+    private void totais(Node node, String estacaoAtual, int[] totalGeral) {
         if (node == null) return;
-    
+
         totais(node.left, estacaoAtual, totalGeral);
-    
+
         DadosEstacao dados = node.dados;
         String estacao = dados.getEstacao();
         int ano = dados.getAno();
-    
+
         if (estacaoAtual == null || !estacaoAtual.equals(estacao)) {
             if (estacaoAtual != null) {
                 System.out.println("Total geral (4 anos): " + totalGeral[0]);
@@ -179,35 +178,35 @@ public class AVLTree extends BinarySearchTree {
             System.out.println("Estacao: " + estacao);
             totalGeral[0] = 0;
         }
-    
+
         int totalAno = 0;
         for (int valor : dados.getDadosMensais()) {
             totalAno += valor;
         }
-    
+
         totalGeral[0] += totalAno;
 
         System.out.println("  Ano " + ano + ": " + totalAno);
 
         totais(node.right, estacao, totalGeral);
     }
-    
+
     public void medias() {
         System.out.println("Medias por estacao e por ano:");
         medias(root, null, new double[1]);
     }
-    
-    private void medias(AVLNode node, String estacaoAtual, double[] somaTotalGeral) {
+
+    private void medias(Node node, String estacaoAtual, double[] somaTotalGeral) {
         if (node == null) {
             return;
         }
-    
+
         medias(node.left, estacaoAtual, somaTotalGeral);
-    
-        DadosEstacao data = node.data;
-        String estacao = data.getEstacao();
-        int ano = data.getAno();
-    
+
+        DadosEstacao dados = node.dados;
+        String estacao = dados.getEstacao();
+        int ano = dados.getAno();
+
         if (estacaoAtual == null || !estacaoAtual.equals(estacao)) {
             if (estacaoAtual != null) {
                 System.out.println("Media total (4 anos): " + (somaTotalGeral[0] / 4));
@@ -215,17 +214,17 @@ public class AVLTree extends BinarySearchTree {
             System.out.println("estacao: " + estacao);
             somaTotalGeral[0] = 0;
         }
-    
+
         int somaAno = 0;
-        for (int valor : data.getDadosMensais()) {
+        for (int valor : dados.getDadosMensais()) {
             somaAno += valor;
         }
         double mediaAno = somaAno / 12.0;
-    
+
         somaTotalGeral[0] += somaAno;
-    
+
         System.out.println("  Ano " + ano + ": media " + mediaAno);
-    
+
         medias(node.right, estacao, somaTotalGeral);
     }
 }
