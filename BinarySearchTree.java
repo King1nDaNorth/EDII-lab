@@ -1,7 +1,3 @@
-// Precisa modificar para refletir mudancas nos Nodes, que agora incluem os objetos da estacao
-// Principalmente na parte de comparacao, como na linha 18. talvez precise comparar
-// "estacao" (nome) + "ano", para nao dar erro, porque teremos 4 de cada estacao
-
 public class BinarySearchTree {
     protected Node root;
 
@@ -17,9 +13,12 @@ public class BinarySearchTree {
         if (node == null) {
             return new Node(dados);
         }
-        if (dados < node.dados) {
+        String newKey = dados.getEstacao() + Integer.toString(dados.getAno());
+        String currentKey = node.dados.getEstacao() + Integer.toString(node.dados.getAno());
+
+        if (newKey.compareTo(currentKey) < 0) {
             node.left = insertRecursive(node.left, dados);
-        } else if (dados > node.dados) {
+        } else if (newKey.compareTo(currentKey) > 0) {
             node.right = insertRecursive(node.right, dados);
         }
         return node;
@@ -33,13 +32,19 @@ public class BinarySearchTree {
         if (node == null) {
             return false;
         }
-        if (dados == node.dados) {
+
+        String searchKey = dados.getEstacao() + Integer.toString(dados.getAno());
+        String currentKey = node.dados.getEstacao() + Integer.toString(node.dados.getAno());
+
+        if (searchKey.equals(currentKey)) {
             return true;
         }
-        return dados < node.dados
-            ? searchRecursive(node.left, dados)
-            : searchRecursive(node.right, dados);
+
+        return searchKey.compareTo(currentKey) < 0
+                ? searchRecursive(node.left, dados)
+                : searchRecursive(node.right, dados);
     }
+
 
     public void delete(DadosEstacao dados) {
         root = deleteRecursive(root, dados);
@@ -50,9 +55,13 @@ public class BinarySearchTree {
             return null;
         }
 
-        if (dados < node.dados) {
+        String deleteKey = dados.getEstacao() + Integer.toString(dados.getAno());
+        String currentKey = node.dados.getEstacao() + Integer.toString(node.dados.getAno());
+
+
+        if (deleteKey.compareTo(currentKey) < 0) {
             node.left = deleteRecursive(node.left, dados);
-        } else if (dados > node.dados) {
+        } else if (deleteKey.compareTo(currentKey) > 0) {
             node.right = deleteRecursive(node.right, dados);
         } else {
             if (node.left == null) return node.right;
@@ -64,7 +73,7 @@ public class BinarySearchTree {
         return node;
     }
 
-    protected int findMinValue(Node node) {
+    protected DadosEstacao findMinValue(Node node) {
         while (node.left != null) {
             node = node.left;
         }
@@ -84,8 +93,8 @@ public class BinarySearchTree {
     }
 
     public void preOrderTraversal() {
-            preOrderTraversal(root);
-            System.out.println();
+        preOrderTraversal(root);
+        System.out.println();
     }
 
     private void preOrderTraversal(Node node) {
