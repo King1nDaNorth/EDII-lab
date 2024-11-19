@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class Main {
 
@@ -22,9 +21,10 @@ public class Main {
                 int[] dadosMensais = Arrays.stream(Arrays.copyOfRange(dados, 2, 14))
                         .mapToInt(Integer::parseInt)
                         .toArray();
-                int linhaArvore = Integer.parseInt(dados[14]);
+                // Modificar para situacoes de multiplas linhas. Talvez fazer array tambem?
+                String linhaArvore = dados[14];
 
-                DadosEstacao dadosEstacao = new DadosEstacao(estacao, ano, dadosMensais, linhaArvore);
+                DadosEstacao dadosEstacao = new DadosEstacao(estacao, linhaArvore, ano, dadosMensais);
 
                 t.insert(dadosEstacao);
             }
