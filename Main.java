@@ -1,7 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -10,31 +10,32 @@ public class Main {
     public static AVLTree lerValoresDoCSV(String caminhoArquivo) {
         AVLTree t = new AVLTree();
 
-        try (CSVReader reader = new CSVReader(new FileReader(caminhoArquivo))) {
-            String[] linha;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo));
+            String linha;
 
-            while ((linha = reader.readNext()) != null) {
-                String estacao = linha[0];
-                int ano = Integer.parseInt(linha[1]);
-                int[] dadosMensais = new int[12];
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
 
-                for (int i = 0; i < 12; i++) {
-                    dadosMensais[i] = Integer.parseInt(linha[2 + i]);
-                }
-
-                int linhaArvore = Integer.parseInt(linha[14]);
+                String estacao = dados[0];
+                int ano = Integer.parseInt(dados[1]);
+                int[] dadosMensais = Arrays.stream(Arrays.copyOfRange(dados, 2, 14))
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+                // Modificar para situacoes de multiplas linhas. Talvez fazer array tambem?
+                int linhaArvore = Integer.parseInt(dados[14]);
 
                 DadosEstacao dadosEstacao = new DadosEstacao(estacao, ano, dadosMensais, linhaArvore);
+
                 t.insert(dadosEstacao);
             }
         } catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo CSV: " + e.getMessage());
-        } catch (NumberFormatException | CsvValidationException e) {
-            System.out.println("Erro ao processar números: " + e.getMessage());
+            System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Erro na formatação dos números: " + e.getMessage());
         }
-
-        return t;
-    }
+           return t;
+        }
 
     public static void main (String[]args){
             Scanner scanner = new Scanner(System.in);
