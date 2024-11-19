@@ -22,7 +22,6 @@ public class Main {
                 int[] dadosMensais = Arrays.stream(Arrays.copyOfRange(dados, 2, 14))
                         .mapToInt(Integer::parseInt)
                         .toArray();
-                // Modificar para situacoes de multiplas linhas. Talvez fazer array tambem?
                 int linhaArvore = Integer.parseInt(dados[14]);
 
                 DadosEstacao dadosEstacao = new DadosEstacao(estacao, ano, dadosMensais, linhaArvore);
