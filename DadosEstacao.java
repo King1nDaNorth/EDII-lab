@@ -1,14 +1,14 @@
 public class DadosEstacao {
     private String estacao;
+    private String linha;
     private int ano;
     private int[] dadosMensais;
-    private int linha;
 
-    public DadosEstacao(String estacao, int ano, int[] dadosMensais, int linha) {
+    public DadosEstacao(String estacao, String linha, int ano, int[] dadosMensais) {
         this.estacao = estacao;
+        this.linha = linha;
         this.ano = ano;
         this.dadosMensais = dadosMensais;
-        this.linha = linha;
     }
 
     public String getEstacao() {
@@ -35,11 +35,11 @@ public class DadosEstacao {
         this.dadosMensais = dadosMensais;
     }
 
-    public int getLinha() {
+    public String getLinha() {
         return linha;
     }
 
-    public void setLinha(int linha) {
+    public void setLinha(String linha) {
         this.linha = linha;
     }
 
@@ -47,7 +47,7 @@ public class DadosEstacao {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Estação: ").append(estacao).append(", Ano: ").append(ano)
-          .append(", Dados Mensais: ");
+                .append(", Dados Mensais: ");
         for (int dado : dadosMensais) {
             sb.append(dado).append(" ");
         }
